@@ -5,8 +5,7 @@
 // ROS::Publisher motor commands;
 ros::Publisher motor_command_publisher;
 
-// TODO: Create a handle_drive_request callback function that executes whenever a drive_bot service is requested
-// This function should publish the requested linear x and angular velocities to the robot wheel joints
+// Control command provided by the service
 bool handle_drive_request(ball_chaser::DriveToTarget::Request& req,
     ball_chaser::DriveToTarget::Response& res)
 {
@@ -15,10 +14,11 @@ bool handle_drive_request(ball_chaser::DriveToTarget::Request& req,
     // Create a motor_command object of type geometry_msgs::Twist
     geometry_msgs::Twist motor_command;
 
-    // Set wheel velocities, forward [0.5, 0.0]
+    // Set wheel velocities
     motor_command.linear.x = req.linear_x;
     motor_command.angular.z = req.angular_z;
-    // Publish angles to drive the robot
+
+    // Publish commands to drive the robot
     motor_command_publisher.publish(motor_command);
 
     // Return a response message
@@ -27,8 +27,6 @@ bool handle_drive_request(ball_chaser::DriveToTarget::Request& req,
 
     return true;
 }
-
-// After publishing the requested velocities, a message feedback should be returned with the requested wheel velocities
 
 int main(int argc, char** argv)
 {
